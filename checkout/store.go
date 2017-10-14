@@ -9,6 +9,6 @@ type store struct {
 	WebsiteURL  string
 }
 
-func (s *store) Info() *store {
+func (s *store) info() *store {
 	return s
 }
