@@ -42,7 +42,7 @@ func main() {
   i.AddItem("Polo Shirt", 1, "35.0", "70.0", "Order of 1 Polo Shirt")
   i.AddItem("Old Navy Jeans", 1, "25.0", "70.0", "Order of 1 Old Navy Jeans")
 
-  // invoice taxex
+  // invoice taxes
   i.AddTax("Tax on T Shirt", 0.50)
   i.TotalAmount = 120.0
 
