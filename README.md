@@ -64,11 +64,3 @@ func main() {
 }
 
 ```
-
-# Todo
-
-3. Tests all methods and functions
-
-4. Think through after create response handling
-
-5. write demo app with material design bootstrap
