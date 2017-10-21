@@ -7,17 +7,28 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ci = os.Getenv("HUBTEL_ID")
-var cs = os.Getenv("HUBTEL_SECRET")
+var (
+	clientID     = os.Getenv("HUBTEL_ID")
+	clientSecret = os.Getenv("HUBTEL_SECRET")
+)
 
-func TestSetup(t *testing.T) {
+func TestGenAuthKey(t *testing.T) {
 	assert := assert.New(t)
 
-	c, err := Setup(ci, cs)
-
+	ak, err := genAuthKey(clientID, clientSecret)
 	if assert.NoError(err) {
-
-		assert.Equal("Basic a3lhYnhpd206YnFyaXhkZmg=", c.authKey)
-
+		assert.Equal("", ak)
 	}
+}
+
+func TestReturnValOfInit(t *testing.T) {
+	assert := assert.New(t)
+
+	c, err := Init(clientID, clientSecret)
+	if assert.NoError(err) {
+		assert.IsType(&checkout{}, c)
+	}
+}
+
+func TestStore(t *testing.T) {
 }

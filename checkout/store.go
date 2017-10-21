@@ -8,7 +8,3 @@ type store struct {
 	LogoURL     string
 	WebsiteURL  string
 }
-
-func (s *store) info() *store {
-	return s
-}

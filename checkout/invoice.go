@@ -1,65 +1,41 @@
 package checkout
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type invoice struct {
-	items       map[string]*item
-	taxes       map[string]*tax
-	customData  map[string]string
-	TotalAmount float64
-	Description string
-	*actions
+	Items       map[string]*item `json:"items,omitempty"`
+	Taxes       map[string]*tax  `json:"taxes,omitempty"`
+	TotalAmount float64          `json:"total_amount,omitempty"`
+	Description string           `json:"description,omitempty"`
+}
+
+// AddItem Is used for adding invoice items to the checkout invoice page.
+func (i *invoice) AddItem(name string, quantity int, unitPrice string, totalPrice string, description string) {
+	i.Items[fmt.Sprintf("item_%d", len(i.Items))] = &item{
+		Name:        name,
+		Quantity:    quantity,
+		UnitPrice:   unitPrice,
+		TotalPrice:  totalPrice,
+		Description: description,
+	}
 }
 
 type item struct {
-	name        string
-	quantity    int
-	unitPrice   string
-	totalPrice  string
-	description string
+	Name        string `json:"name,omitempty"`
+	Quantity    int    `json:"quantity,omitempty"`
+	UnitPrice   string `json:"unit_price,omitempty"`
+	TotalPrice  string `json:"total_price,omitempty"`
+	Description string `json:"description,omitempty"`
 }
 
 type tax struct {
-	name   string
-	amount float64
-}
-
-type actions struct {
-	cancelURL string
-	returnURL string
-}
-
-func (i *invoice) AddItem(name string, quantity int, unitPrice string, totalPrice string, description string) {
-	i.items[fmt.Sprintf("item_%d", len(i.items))] = &item{
-		name:        name,
-		quantity:    quantity,
-		unitPrice:   unitPrice,
-		totalPrice:  totalPrice,
-		description: description,
-	}
+	Name   string  `json:"name,omitempty"`
+	Amount float64 `json:"amount,omitempty"`
 }
 
 func (i *invoice) AddTax(name string, amount float64) {
-	i.taxes[fmt.Sprintf("tax_%d", len(i.taxes))] = &tax{
-		name:   name,
-		amount: amount,
+	i.Taxes[fmt.Sprintf("tax_%d", len(i.Taxes))] = &tax{
+		Name:   name,
+		Amount: amount,
 	}
-}
-
-func (i *invoice) SetCancelURL(url string) {
-	i.actions.cancelURL = url
-}
-
-func (i *invoice) SetReturnURL(url string) {
-	i.actions.returnURL = url
-}
-
-func (i *invoice) AddCustomData(key, value string) {
-	i.customData[key] = value
-}
-
-func (i *invoice) GetCustomData(key string) string {
-	return i.customData[key]
 }
