@@ -1,3 +1,6 @@
+// Package hc is an api wrapper to hubtel's merchant account checkout API
+// allows merchants to accept online payment for goods and services using
+// mobile money and credit/debit cards
 package hc
 
 import (
@@ -11,6 +14,8 @@ import (
 	"strings"
 )
 
+// Checkout represents hubtel online
+// checkout page
 type Checkout struct {
 	auth       string
 	Invoice    *Invoice
