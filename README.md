@@ -2,7 +2,8 @@
 
 API wrapper in Golang.
 
-The merchant account checkout API allows merchants to accept online payment for goods and services using mobile money and credit/debit cards
+The merchant account checkout API allows merchants to accept online payment for goods and services
+using mobile money and credit/debit cards
 
 ## Installation
 
@@ -11,16 +12,6 @@ The merchant account checkout API allows merchants to accept online payment for 
 ## Usage
 
 ```go
-
-package main
-
-import (
-  "fmt"
-  "log"
-  "os"
-
-  "github.com/kofiasare/hc"
-)
 
 func main() {
 
@@ -44,11 +35,11 @@ func main() {
 
   // checkout invoice
   c.Invoice.Description = "Invoice Description"
-  c.Invoice.AddItem("T Shirt", 2, "35.0", "70.0", "Order of 2 Shirts")
-  c.Invoice.AddItem("Polo Shirt", 1, "35.0", "35.0", "Order of  Polo Shirt")
-  c.Invoice.AddItem("Old Navy Jeans", 1, "25.0", "25.0", "Order of 1 Old Navy Jeans")
+  c.Invoice.AddItem("T Shirt", 2, 35.0, 70.0, "Order of 2 Shirts")
+  c.Invoice.AddItem("Polo Shirt", 1, 35.0, 35.0, "Order of  Polo Shirt")
+  c.Invoice.AddItem("Old Navy Jeans", 1, 25.0, 25.0, "Order of 1 Old Navy Jeans")
   c.Invoice.AddTax("Tax on T Shirt", 0.50)
-  c.Invoice.TotalAmount = 130.00
+  c.Invoice.TotalAmount = 130.50
 
   // checkout custom data
   c.CustomData.Add("email", "kofi@gmail.com")
@@ -57,19 +48,30 @@ func main() {
   c.Actions.CancelURL = "http://company.com"
   c.Actions.ReturnURL = "http://company.com"
 
-  // create checkout
+  // create checkout invoice
   r, err := c.Create()
   if err != nil {
     log.Fatal(err)
   }
 
   if r.ResponseCode == "00" {
+
     fmt.Printf("Redirect URL: %s\n", r.ResponseText)
     fmt.Printf("Token: %s\n", r.Token)
-  } else {
-    fmt.Println(r.ResponseText)
-  }
 
+    // retrieve checkout invoice status
+    r, err = c.Status(r.Token)
+    if err != nil {
+      log.Fatal(err)
+    }
+
+    if r.ResponseCode == "00" {
+      fmt.Printf("Checkout Invoice Status is: %s\n", r.Status)
+    }
+
+  } else {
+      fmt.Println(r.ResponseText)
+  }
 }
 
 ```

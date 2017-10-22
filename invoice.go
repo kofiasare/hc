@@ -14,7 +14,7 @@ type Invoice struct {
 }
 
 // AddItem Is used for adding invoice items to the checkout invoice page.
-func (i *Invoice) AddItem(name string, quantity int, unitPrice string, totalPrice string, description string) {
+func (i *Invoice) AddItem(name string, quantity int, unitPrice, totalPrice float64, description string) {
 	i.Items[fmt.Sprintf("item_%d", len(i.Items))] = &Item{
 		Name:        name,
 		Quantity:    quantity,
@@ -26,11 +26,11 @@ func (i *Invoice) AddItem(name string, quantity int, unitPrice string, totalPric
 
 // Item specifies a single item on the checkout page.
 type Item struct {
-	Name        string `json:"name,omitempty"`
-	Quantity    int    `json:"quantity,omitempty"`
-	UnitPrice   string `json:"unit_price,omitempty"`
-	TotalPrice  string `json:"total_price,omitempty"`
-	Description string `json:"description,omitempty"`
+	Name        string  `json:"name,omitempty"`
+	Quantity    int     `json:"quantity,omitempty"`
+	UnitPrice   float64 `json:"unit_price,omitempty"`
+	TotalPrice  float64 `json:"total_price,omitempty"`
+	Description string  `json:"description,omitempty"`
 }
 
 // Tax specifies the tax items that apply to the invoice.

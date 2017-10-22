@@ -15,14 +15,21 @@ import (
 )
 
 const (
+
+	// BaseURL merchant checkout api base url
+	BaseURL = "https://api.hubtel.com/v1/merchantaccount/onlinecheckout/"
+
 	// CreateInvoiceURL endpoit for creating checkout invoice
-	CreateInvoiceURL = "https://api.hubtel.com/v1/merchantaccount/onlinecheckout/invoice/create"
+	CreateInvoiceURL = BaseURL + "invoice/create"
+
+	// InvoiceStatusURL endpoint for retrieving status of checkout invoice
+	InvoiceStatusURL = BaseURL + "invoice/status/"
 )
 
 // Checkout represents hubtel online
 // checkout page
 type Checkout struct {
-	auth       string
+	authKey    string
 	Invoice    *Invoice
 	Store      *Store
 	Actions    *Actions
@@ -37,10 +44,14 @@ type checkoutRequest struct {
 }
 
 type checkoutResponse struct {
-	ResponseCode string `json:"response_code,omitempty"`
-	ResponseText string `json:"response_text,omitempty"`
-	Description  string `json:"description,omitempty"`
-	Token        string `json:"token,omitempty"`
+	ResponseCode string      `json:"response_code,omitempty"`
+	ResponseText string      `json:"response_text,omitempty"`
+	Description  string      `json:"description,omitempty"`
+	Token        string      `json:"token,omitempty"`
+	Invoice      *Invoice    `json:"invoice,omitempty"`
+	Actions      *Actions    `json:"actions,omitempty"`
+	CustomData   *CustomData `json:"custom_data,omitempty"`
+	Status       string      `json:"status,omitempty"`
 }
 
 // Setup checkout with hubtel checkout
@@ -54,7 +65,7 @@ func Setup(clientID, clientSecret string) (*Checkout, error) {
 	}
 
 	c := &Checkout{
-		auth:    ak,
+		authKey: ak,
 		Store:   new(Store),
 		Actions: new(Actions),
 		Invoice: &Invoice{
@@ -77,8 +88,9 @@ func (c *Checkout) Create() (*checkoutResponse, error) {
 	}
 
 	req, _ := http.NewRequest(http.MethodPost, CreateInvoiceURL, bytes.NewBuffer(body))
-	req.Header.Add("Authorization", c.auth)
+	req.Header.Add("Authorization", c.authKey)
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Cache-Control", "no-cache")
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -87,6 +99,32 @@ func (c *Checkout) Create() (*checkoutResponse, error) {
 
 	defer resp.Body.Close()
 	body, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	cr := new(checkoutResponse)
+	err = json.Unmarshal(body, cr)
+	if err != nil {
+		return nil, err
+	}
+
+	return cr, nil
+}
+
+// Status retrieve online checkout invoice status
+func (c *Checkout) Status(token string) (*checkoutResponse, error) {
+	req, _ := http.NewRequest(http.MethodGet, InvoiceStatusURL+token, nil)
+	req.Header.Add("Authorization", c.authKey)
+	req.Header.Add("Cache-Control", "no-cache")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
