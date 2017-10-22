@@ -2,8 +2,9 @@
 
 API wrapper in Golang.
 
-The merchant account checkout API allows merchants to accept online payment for goods and services
-using mobile money and credit/debit cards
+The [hubtel merchant account checkout API](https://developers.hubtel.com/documentations/online-checkout-api) allows merchants to accept online payment for goods and services using mobile money and credit/debit cards.
+
+see the [docs](https://godoc.org/github.com/kofiasare/hc) for details
 
 ## Import
 
@@ -77,6 +78,7 @@ func main() {
 
     if r.ResponseCode == "00" {
       fmt.Printf("Checkout Invoice Status is: %s\n", r.Status)
+      fmt.Printf()
     }
 
   } else {
