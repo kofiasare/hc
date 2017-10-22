@@ -1,6 +1,6 @@
-// Package hc is an api wrapper to hubtel's merchant account checkout API
+// Package hc is an api wrapper for hubtel's merchant account.Checkout API
 // allows merchants to accept online payment for goods and services using
-// mobile money and credit/debit cards
+// mobile money and credit/debit cards.
 package hc
 
 import (
