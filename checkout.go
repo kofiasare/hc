@@ -114,7 +114,10 @@ func (c *Checkout) Create() (*checkoutResponse, error) {
 
 // Status retrieve online checkout invoice status
 func (c *Checkout) Status(token string) (*checkoutResponse, error) {
-	req, _ := http.NewRequest(http.MethodGet, InvoiceStatusURL+token, nil)
+
+	url := InvoiceStatusURL + token
+
+	req, _ := http.NewRequest(http.MethodGet, url, nil)
 	req.Header.Add("Authorization", c.authKey)
 	req.Header.Add("Cache-Control", "no-cache")
 
@@ -139,6 +142,7 @@ func (c *Checkout) Status(token string) (*checkoutResponse, error) {
 }
 
 func (c *Checkout) genRequestBody() ([]byte, error) {
+
 	body := &checkoutRequest{
 		Invoice:    c.Invoice,
 		Store:      c.Store,
@@ -153,11 +157,11 @@ func genAuthKey(clientID, clientSecret string) (string, error) {
 
 	switch {
 	case clientID == "" && clientSecret == "":
-		return "", errors.New("clientID and clientSecret are required to setup hubtel's checkout")
+		return "", errors.New("configure client_id and client_secret")
 	case clientID == "":
-		return "", errors.New("error: clientID is required to setup hubtel's checkout")
+		return "", errors.New("configure client_id")
 	case clientSecret == "":
-		return "", errors.New("error: clientSecret is required to setup hubtel's checkout")
+		return "", errors.New("configure client_secret")
 	}
 
 	m := strings.Join([]string{clientID, clientSecret}, ":")
