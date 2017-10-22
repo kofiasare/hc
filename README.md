@@ -5,13 +5,23 @@ API wrapper in Golang.
 The merchant account checkout API allows merchants to accept online payment for goods and services
 using mobile money and credit/debit cards
 
-## Installation
+## Import
 
 ```go get -u github.com/kofiasare/hc```
 
 ## Usage
 
 ```go
+
+package main
+
+import (
+  "fmt"
+  "log"
+  "os"
+
+  "github.com/kofiasare/hc"
+)
 
 func main() {
 
