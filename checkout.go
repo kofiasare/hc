@@ -14,6 +14,11 @@ import (
 	"strings"
 )
 
+const (
+	// CreateInvoiceURL endpoit for creating checkout invoice
+	CreateInvoiceURL = "https://api.hubtel.com/v1/merchantaccount/onlinecheckout/invoice/create"
+)
+
 // Checkout represents hubtel online
 // checkout page
 type Checkout struct {
@@ -63,10 +68,6 @@ func Setup(clientID, clientSecret string) (*Checkout, error) {
 	return c, nil
 }
 
-const (
-	url = "https://api.hubtel.com/v1/merchantaccount/onlinecheckout/invoice/create"
-)
-
 // Create online checkout invoice
 func (c *Checkout) Create() (*checkoutResponse, error) {
 
@@ -75,7 +76,7 @@ func (c *Checkout) Create() (*checkoutResponse, error) {
 		return nil, err
 	}
 
-	req, _ := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
+	req, _ := http.NewRequest(http.MethodPost, CreateInvoiceURL, bytes.NewBuffer(body))
 	req.Header.Add("Authorization", c.auth)
 	req.Header.Add("Content-Type", "application/json")
 
