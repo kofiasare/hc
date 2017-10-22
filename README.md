@@ -1,22 +1,25 @@
-# Hubtel's Checkout
+# Hubtel Merchant Checkout
 
-API wrapper in Golang
+API wrapper in Golang.
+
+The merchant account checkout API allows merchants to accept online payment for goods and services using mobile money and credit/debit cards
 
 ## Installation
 
-```go get -u github.com/kofiasare/hubtel/checkout```
+```go get -u github.com/kofiasare/hc```
 
 ## Usage
 
 ```go
+
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
+  "fmt"
+  "log"
+  "os"
 
-	"github.com/kofiasare/hubtel/checkout"
+  "github.com/kofiasare/hc"
 )
 
 func main() {
@@ -26,7 +29,7 @@ func main() {
   clientSecret := os.Getenv("HUBTEL_SECRET")
 
   // setup checkout with credentials
-  c, err := checkout.Setup(clientID, clientSecret)
+  c, err := hc.Setup(clientID, clientSecret)
   if err != nil {
     log.Fatal(err)
   }
@@ -60,7 +63,13 @@ func main() {
     log.Fatal(err)
   }
 
-  fmt.Println(string(r))
+  if r.ResponseCode == "00" {
+    fmt.Printf("Redirect URL: %s\n", r.ResponseText)
+    fmt.Printf("Token: %s\n", r.Token)
+  } else {
+    fmt.Println(r.ResponseText)
+  }
+
 }
 
 ```
