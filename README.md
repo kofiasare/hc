@@ -78,7 +78,6 @@ func main() {
 
     if r.ResponseCode == "00" {
       fmt.Printf("Checkout Invoice Status is: %s\n", r.Status)
-      fmt.Printf()
     }
 
   } else {
