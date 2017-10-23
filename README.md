@@ -6,9 +6,9 @@ The [hubtel merchant account checkout API](https://developers.hubtel.com/documen
 
 see the [docs](https://godoc.org/github.com/kofiasare/hc) for details
 
-## Import
+## Download
 
-```go get -u github.com/kofiasare/hc```
+```$ go get -u github.com/kofiasare/hc```
 
 ## Usage
 
