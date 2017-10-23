@@ -11,8 +11,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ()
-
 func TestUnconfiguredClientID(t *testing.T) {
 	assert := assert.New(t)
 	_, err := Setup("", "efgh")
