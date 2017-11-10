@@ -13,6 +13,6 @@ func (c *CustomData) Add(key string, value interface{}) {
 }
 
 // Get is used for retrieving a custom data.
-func (c *CustomData) Get(key string) interface{} {
+func (c CustomData) Get(key string) interface{} {
 	return c.CustomData[key]
 }

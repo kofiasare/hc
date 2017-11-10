@@ -80,7 +80,7 @@ func Setup(clientID, clientSecret string) (*Checkout, error) {
 }
 
 // Create online checkout invoice
-func (c *Checkout) Create() (*checkoutResponse, error) {
+func (c Checkout) Create() (*checkoutResponse, error) {
 
 	body, err := c.genRequestBody()
 	if err != nil {
@@ -113,7 +113,7 @@ func (c *Checkout) Create() (*checkoutResponse, error) {
 }
 
 // Status retrieve online checkout invoice status
-func (c *Checkout) Status(token string) (*checkoutResponse, error) {
+func (c Checkout) Status(token string) (*checkoutResponse, error) {
 
 	url := InvoiceStatusURL + token
 
@@ -141,7 +141,7 @@ func (c *Checkout) Status(token string) (*checkoutResponse, error) {
 	return cr, nil
 }
 
-func (c *Checkout) genRequestBody() ([]byte, error) {
+func (c Checkout) genRequestBody() ([]byte, error) {
 
 	body := &checkoutRequest{
 		Invoice:    c.Invoice,
